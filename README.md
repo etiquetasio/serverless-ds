@@ -1,4 +1,5 @@
-# ds-controller
-Digital Sign Age Controller
+# SERVERLESS DIGITAL SIGN AGE
 
-teste
+This Project is a Digital Sign Age system entirely Serverless ( Proof of Concept )
+
+
