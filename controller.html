@@ -48,6 +48,34 @@ button:hover { background: #32cd32; }
   color: white;
 }
 #send-url:hover { background: #1e90ff; }
+#log {
+  margin-top:20px;
+  width:100%;
+  max-width:600px;
+  background:#222;
+  padding:10px;
+  border-radius:6px;
+  height:150px;
+  overflow-y:auto;
+  font-size:13px;
+}
+#history {
+  margin-top:15px;
+  width:100%;
+  max-width:600px;
+  background:#1b1b1b;
+  padding:10px;
+  border-radius:6px;
+}
+#history h3 { margin:0 0 10px 0; font-size:14px; }
+#history button {
+  background:#444;
+  color:#fff;
+  margin:3px;
+  font-size:13px;
+  padding:6px 12px;
+}
+#history button:hover { background:#666; }
 </style>
 </head>
 <body>
@@ -69,18 +97,38 @@ button:hover { background: #32cd32; }
   <button type="submit" id="send-url">Enviar URL</button>
 </form>
 
+<!-- Histórico -->
+<div id="history">
+  <h3>Histórico de URLs</h3>
+  <div id="history-list"></div>
+</div>
+
+<!-- Log do MQTT -->
+<div id="log"></div>
+
 <script>
 const urlParams = new URLSearchParams(window.location.search);
 const duid = urlParams.get("duid") || "teste-duid";
 const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
+const logDiv = document.getElementById("log");
+const historyList = document.getElementById("history-list");
+let urlHistory = [];
+
+function log(msg){
+  const p = document.createElement("div");
+  p.textContent = msg;
+  logDiv.appendChild(p);
+  logDiv.scrollTop = logDiv.scrollHeight;
+}
 
 client.on("connect", () => {
-  console.log("Controller conectado ao MQTT com DUID:", duid);
+  log("✅ Controller conectado ao MQTT com DUID: " + duid);
 });
 
 function send(topic, value){
-  client.publish(`${duid}/${topic}`, value);
-  console.log(`Enviado -> ${duid}/${topic}: ${value}`);
+  const fullTopic = `${duid}/${topic}`;
+  client.publish(fullTopic, value);
+  log(`📤 Enviado -> ${fullTopic}: ${value}`);
 }
 
 function publishURL(event){
@@ -88,8 +136,27 @@ function publishURL(event){
   const url = document.getElementById("url-input").value.trim();
   if(url){
     send("url", url);
+    addToHistory(url);
     document.getElementById("url-input").value = "";
   }
+}
+
+function addToHistory(url){
+  if(!urlHistory.includes(url)){
+    urlHistory.unshift(url);
+    if(urlHistory.length > 5) urlHistory.pop(); // mantém só 5 últimas
+    renderHistory();
+  }
+}
+
+function renderHistory(){
+  historyList.innerHTML = "";
+  urlHistory.forEach(u => {
+    const btn = document.createElement("button");
+    btn.textContent = u;
+    btn.onclick = () => send("url", u);
+    historyList.appendChild(btn);
+  });
 }
 </script>
 </body>
