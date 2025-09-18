@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Digital Signage Rotativo</title>
+<title>Digital Signage Fullscreen</title>
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <style>
@@ -13,7 +13,6 @@ html, body {
 
 #container {
   width:100%; height:100%; position:relative;
-  overflow:hidden;
 }
 
 #start-btn {
@@ -24,7 +23,7 @@ html, body {
   border-radius:10px; z-index:2000;
 }
 
-#app-content { display:none; width:100%; height:100%; position:relative; z-index:100; }
+#app-content { display:none; width:100%; height:100%; position:relative; }
 
 #qr-container {
   position:absolute; bottom:2%; left:2%;
@@ -64,10 +63,16 @@ html, body {
   top:0; left:0;
 }
 
-/* Portrait → aplica rotação 270° */
+/* Portrait → aplicar rotação e stretch */
 #image-panel.portrait img {
   transform: rotate(270deg);
   transform-origin: center center;
+  width:100vh; /* altura da tela → largura da imagem rotacionada */
+  height:100vw; /* largura da tela → altura da imagem rotacionada */
+  position:absolute;
+  top:50%; left:50%;
+  margin-top:-50vw;
+  margin-left:-50vh;
 }
 
 /* Log canto superior esquerdo */
@@ -125,10 +130,10 @@ const bgIframe = document.getElementById("bg-iframe");
 const logEl = document.getElementById("log");
 duidText.textContent = duid;
 
-// QR Code
+// QR CODE
 function generateQRCode(){
   const url = `https://etiquetasio.github.io/serverless-ds/controller.html?duid=${duid}`;
-  const link = document.createElement("a"); link.href = url; link.target="_blank";
+  const link = document.createElement("a"); link.href=url; link.target="_blank";
   const canvas = document.createElement("canvas");
   QRCode.toCanvas(canvas,url,{width:100,margin:1,color:{dark:"#000",light:"#fff"}},err=>{
     if(err)console.error(err);
@@ -143,9 +148,9 @@ function initMQTT(){
   let linkedState = localStorage.getItem(`${duid}-linked`)==="true";
   let qrState = localStorage.getItem(`${duid}-qrcode`)!=="0";
 
+  qrDiv.parentElement.style.display = qrState?"flex":"none";
+  logEl.style.display = qrState?"block":"none";
   if(linkedState) linkIcon.style.display="inline-block";
-  qrDiv.parentElement.style.display = qrState ? "flex" : "none";
-  logEl.style.display = qrState ? "block" : "none";
 
   client.on("connect",()=>{ statusDot.style.backgroundColor="green"; client.subscribe(`${duid}/#`); logEl.textContent="[MQTT conectado]\n"+logEl.textContent; });
   client.on("close",()=>{ statusDot.style.backgroundColor="red"; logEl.textContent="[MQTT desconectado]\n"+logEl.textContent; });
@@ -155,7 +160,7 @@ function initMQTT(){
     const msg = message.toString();
     logEl.textContent=`[${topic}] ${msg}\n`+logEl.textContent;
 
-    // IMAGE FULLSCREEN
+    // IMAGE
     if(topic===`${duid}/url` && msg.match(/\.(jpeg|jpg|png|gif|webp)$/i)){
       const img = new Image();
       img.onload=()=>{
@@ -169,10 +174,10 @@ function initMQTT(){
       return;
     }
 
-    // IFRAME fallback
+    // IFRAME
     if(topic===`${duid}/url` && !msg.match(/\.(jpeg|jpg|png|gif|webp)$/i)){
       bgIframe.src=msg; bgIframe.style.display="block";
-      videoPanel.style.display="none"; imagePanel.style.display="none";
+      imagePanel.style.display="none"; videoPanel.style.display="none";
       return;
     }
 
@@ -195,12 +200,6 @@ function initMQTT(){
       else { linkedText.textContent="UNLINKED"; linkedState=false; localStorage.setItem(`${duid}-linked`,"false"); linkIcon.style.display="none"; }
       linkedText.style.opacity="1"; linkedText.style.display="block";
       setTimeout(()=>{ linkedText.style.opacity="0"; setTimeout(()=>linkedText.style.display="none",500); },2000);
-    }
-
-    // FULLSCREEN
-    if(topic===`${duid}/fullscreen`){
-      if(msg==="1" && !document.fullscreenElement) document.documentElement.requestFullscreen();
-      else if(msg==="0" && document.fullscreenElement) document.exitFullscreen();
     }
   });
 }
