@@ -150,7 +150,7 @@ const bgIframe = document.getElementById("bg-iframe");
 duidText.textContent = duid;
 
 function generateQRCode(){
-  const url = `https://etiquetasio.github.io/ds-controller/controller.html?duid=${duid}`;
+  const url = `https://etiquetasio.github.io/serverless-ds/controller.html?duid=${duid}`;
   const link = document.createElement("a");
   link.href = url; link.target = "_blank";
   
