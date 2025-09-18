@@ -2,69 +2,95 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Controller Digital Signage</title>
+<title>Controller</title>
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 <style>
-body { margin:0; padding:0; font-family:Arial,sans-serif; background:#111; color:white; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:100vh; }
-h1 { margin-top:20px; }
-.container { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; justify-content:center; }
-button { padding:15px 25px; font-size:16px; cursor:pointer; border:none; border-radius:8px; background:#28a745; color:white; }
-button.unlink { background:#dc3545; }
-#log { margin-top:20px; width:90%; max-width:600px; height:150px; overflow-y:auto; background:rgba(0,0,0,0.5); padding:10px; border-radius:5px; color:#0f0; font-size:14px; }
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+h2 { margin-bottom: 20px; }
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: limegreen;
+  color: black;
+}
+button:hover { background: #32cd32; }
+#url-form {
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+  width:100%;
+  max-width:500px;
+}
+#url-input {
+  flex:1;
+  padding:10px;
+  border-radius:6px;
+  border:none;
+  font-size:14px;
+}
+#send-url {
+  background: dodgerblue;
+  color: white;
+}
+#send-url:hover { background: #1e90ff; }
 </style>
 </head>
 <body>
-<h1>Digital Signage Controller</h1>
-<div class="container">
-  <button id="qrcode-hide">QRCODE HIDE</button>
-  <button id="qrcode-show">QRCODE SHOW</button>
-  <button id="rotate-0">ROTATE 0</button>
-  <button id="rotate-90">ROTATE 90</button>
-  <button id="rotate-180">ROTATE 180</button>
-  <button id="rotate-270">ROTATE 270</button>
-  <button id="link">LINK</button>
-  <button id="unlink" class="unlink">UNLINK</button>
+<h2>Controller</h2>
+<div id="buttons">
+  <button onclick="send('qrcode','0')">QRCODE HIDE</button>
+  <button onclick="send('qrcode','1')">QRCODE SHOW</button>
+  <button onclick="send('container','0')">ROTATE 0</button>
+  <button onclick="send('container','90')">ROTATE 90</button>
+  <button onclick="send('container','180')">ROTATE 180</button>
+  <button onclick="send('container','270')">ROTATE 270</button>
+  <button onclick="send('link','1')">LINK</button>
+  <button onclick="send('link','0')">UNLINK</button>
 </div>
-<div id="log">Log MQTT...</div>
+
+<!-- Campo para enviar URL -->
+<form id="url-form" onsubmit="publishURL(event)">
+  <input type="text" id="url-input" placeholder="Digite a URL para exibir no player..." />
+  <button type="submit" id="send-url">Enviar URL</button>
+</form>
 
 <script>
-// Pega o duid da query string
-function getDuid() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("duid") || "";
-}
-const duid = getDuid();
-if(!duid){ alert("DUID não encontrado na URL!"); throw "DUID não definido"; }
-
-// Conecta MQTT
+const urlParams = new URLSearchParams(window.location.search);
+const duid = urlParams.get("duid") || "teste-duid";
 const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
-const logEl = document.getElementById("log");
 
-function log(msg){
-  logEl.textContent = `[${new Date().toLocaleTimeString()}] ${msg}\n` + logEl.textContent;
-}
-
-client.on("connect", ()=>{
-  log("MQTT conectado");
+client.on("connect", () => {
+  console.log("Controller conectado ao MQTT com DUID:", duid);
 });
-client.on("close", ()=>log("MQTT desconectado"));
-client.on("error", (err)=>log("Erro MQTT: "+err));
 
-// Função para enviar mensagem
 function send(topic, value){
   client.publish(`${duid}/${topic}`, value);
-  log(`Enviado -> ${duid}/${topic}: ${value}`);
+  console.log(`Enviado -> ${duid}/${topic}: ${value}`);
 }
 
-// Associa botões
-document.getElementById("qrcode-hide").addEventListener("click", ()=>send("qrcode","0"));
-document.getElementById("qrcode-show").addEventListener("click", ()=>send("qrcode","1"));
-document.getElementById("rotate-0").addEventListener("click", ()=>send("container","0"));
-document.getElementById("rotate-90").addEventListener("click", ()=>send("container","90"));
-document.getElementById("rotate-180").addEventListener("click", ()=>send("container","180"));
-document.getElementById("rotate-270").addEventListener("click", ()=>send("container","270"));
-document.getElementById("link").addEventListener("click", ()=>send("link","1"));
-document.getElementById("unlink").addEventListener("click", ()=>send("link","0"));
+function publishURL(event){
+  event.preventDefault();
+  const url = document.getElementById("url-input").value.trim();
+  if(url){
+    send("url", url);
+    document.getElementById("url-input").value = "";
+  }
+}
 </script>
 </body>
 </html>
