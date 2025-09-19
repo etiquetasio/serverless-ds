@@ -4,19 +4,19 @@ This Project is a Digital Sign Age system entirely Serverless ( Proof of Concept
 
 This system consist in 3 elemtents:
 
-PLAYER
+# PLAYER
 - A HTML page with Javascript to show images or videos
 
-CONTROLLER
+# CONTROLLER
 - A HTML page with Javascript to control the Remote Screen by Websockets
 
-ONLINE DATABASE
-A online smartsheet database to store images and videos
+# ONLINE DATABASE
+-A online smartsheet database to store images and videos
 
 
-How it works ( DEMO )
+## How it works ( DEMO )
 
-Setup a SCREEN
+### Setup a SCREEN
 
 1 - Open the PLAYER in a Browser URL https://etiquetasio.github.io/serverless-ds/  of a new SCREEN ( Can be Windows, Mac, Android, etc, just neet to be Chrome ... )
 2 - A QRCODE and a DUID will be automatically generated    ( If you wish, you can open the CONTROLLER by clicking the QRCODE element to get the link )
