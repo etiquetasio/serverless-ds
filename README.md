@@ -28,7 +28,10 @@ This system consist in 3 elements:
 
 # Todo list:
 
-4 - You can add images, videos and schedule the content (next release )
+### Add images, videos and schedule the content (next release )
+### Elektron versions for Windows, Linux and MacOS
+### PWA version for Android
+### Remote fullscreen Command
 
 
 
