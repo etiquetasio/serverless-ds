@@ -21,10 +21,13 @@ This system consist in 3 elements:
 ### Setup a SCREEN
 
 1 - Open the PLAYER in a Browser URL https://etiquetasio.github.io/serverless-ds/  of a new SCREEN ( Can be Windows, Mac, Android, etc, just neet to be Chrome ... )
+
 2 - A QRCODE and a DUID will be automatically generated    ( If you wish, you can open the CONTROLLER by clicking the QRCODE element to get the link )
+
 3 - Get your smartphone and capture QRCODE url with your Camera, now you can control the Screen Remotely
 
-Todo:
+# Todo list:
+
 4 - You can add images, videos and schedule the content
 
 
