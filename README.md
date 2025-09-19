@@ -28,10 +28,10 @@ This system consist in 3 elements:
 
 # Todo list:
 
-**Add images, videos and schedule the content (next release )
-**Elektron versions for Windows, Linux and MacOS
-**PWA version for Android
-**Remote fullscreen Command
+** Add images, videos and schedule the content (next release )
+** Elektron versions for Windows, Linux and MacOS
+** PWA version for Android
+** Remote fullscreen Command
 
 
 
