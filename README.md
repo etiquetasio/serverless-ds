@@ -14,6 +14,10 @@ This system use MQTT, Websockets and Airtable into a simple javascript pages mad
 # CONTROLLER
 - A HTML page with Javascript to control the Remote Screen by Websockets
 
+![alt text](https://i.imgur.com/4qPVPM6.png)
+
+OBS: The controller is under constant development and improvement.
+
 # ONLINE DATABASE
 -A online smartsheet database to store images and videos
 
