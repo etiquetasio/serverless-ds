@@ -9,7 +9,7 @@ This system use MQTT, Websockets and Airtable into a simple javascript pages mad
 # PLAYER
 - A HTML page with Javascript to show images or videos
 
-[![alt text](https://i.imgur.com/uAUPXja.png)](https://i.imgur.com/S1m31HJ.png)
+![alt text](https://i.imgur.com/S1m31HJ.png)
 
 # CONTROLLER
 - A HTML page with Javascript to control the Remote Screen by Websockets
