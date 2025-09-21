@@ -35,9 +35,19 @@ https://airtable.com/appJenx8y4mRZDo6e/shrqI3K6SwXNqCxrV
 
 3 - Get your smartphone and capture QRCODE url with your Camera, now you can control the Screen Remotely
 
+4 - For now you can send image URLs , images portrait or landscape...
+
+
+
 # Todo list:
 
-Add images, videos and schedule the content (next release )
+Add videos to Smartsheet and link to a SCREEN
+
+Schedule the content (next release ) by Smartsheet Database
+
+Rotate Screen better way 
+
+Better resposive support
 
 Elektron versions for Windows, Linux and MacOS
 
