@@ -27,7 +27,7 @@ https://airtable.com/appJenx8y4mRZDo6e/shrqI3K6SwXNqCxrV
 
 ### Setup a SCREEN
 
-1 - Open the PLAYER in a Browser URL https://etiquetasio.github.io/serverless-ds/  of a new SCREEN ( Can be Windows, Mac, Android, etc, just neet to be Chrome ... )
+1 - Open the PLAYER in a Browser URL https://etiquetasio.github.io/serverless-ds/  of a new SCREEN ( Can be Windows, Mac, Android, etc, just neet to be Chrome ... ), the Player will connect to a public MQTT Server ( hivemq ) and its communication is done by WS:\\ ( websockets ), after you open the controller will send messages to the DUID topic of screen and the browser session wil react to its commands.
 
 2 - A QRCODE and a DUID will be automatically generated    ( If you wish, you can open the CONTROLLER by clicking the QRCODE element to get the link )
 
