@@ -2,9 +2,9 @@
 
 This Project is a Digital Sign Age system entirely Serverless ( Proof of Concept )
 
-This system use MQTT, Websockets and Airtable !
+This system use MQTT, Websockets and Airtable into a simple javascript pages made with the help of ChatGPT.
 
-This system consist in 3 elements:
+
 
 # PLAYER
 - A HTML page with Javascript to show images or videos
