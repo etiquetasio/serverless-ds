@@ -53,7 +53,7 @@ Elektron versions for Windows, Linux and MacOS
 
 PWA version for Android
 
-Remote fullscreen Command
+Remote fullscreen activation for Elektron releases and Android release
 
 
 
