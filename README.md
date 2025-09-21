@@ -31,6 +31,8 @@ https://airtable.com/appJenx8y4mRZDo6e/shrqI3K6SwXNqCxrV
 
 2 - A QRCODE and a DUID will be automatically generated    ( If you wish, you can open the CONTROLLER by clicking the QRCODE element to get the link )
 
+![alt text](https://i.imgur.com/uFyRbwX.png)
+
 3 - Get your smartphone and capture QRCODE url with your Camera, now you can control the Screen Remotely
 
 # Todo list:
